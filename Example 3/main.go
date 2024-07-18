@@ -19,6 +19,6 @@ func main() {
 	})
 
 	fmt.Println("Server started on port 8080")
-	fmt.Println("Run 'curl http://localhost:8080/books/HarryPotter/page/1' to test endpoint")
+	fmt.Println("Run 'curl http://localhost:8080/books/HarryPotter/page/1' in cmd to test endpoint")
 	http.ListenAndServe("localhost:8080", r)
 }
