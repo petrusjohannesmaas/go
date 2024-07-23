@@ -3,6 +3,5 @@ package main
 import "fmt"
 
 func main() {
-    fmt.Println("Hello Youtube!")
-    runPrimitivesLogic()
+	fmt.Println("Hello Youtube!")
 }
