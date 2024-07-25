@@ -4,12 +4,12 @@ import "fmt"
 
 func lineOne() {
     var name string = "test"
-    fmt.Println("This is a ", name)
+    fmt.Println("This is a", name)
 }
 
 func lineTwo()  {
     var difficulty bool = false                
-    fmt.Println("Is it easy? ", difficulty) 
+    fmt.Println("Is it easy?", difficulty) 
 }
 
 func lineThree()  {
