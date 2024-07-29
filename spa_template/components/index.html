@@ -6,9 +6,12 @@
         <script src="https://unpkg.com/htmx.org@2.0.1" integrity="sha384-QWGpdj554B4ETpJJC9z+ZHJcA/i59TyjxEPXiiUgN2WmTyV5OEZWCD6gQhgkdpB/" crossorigin="anonymous"></script>
     </head>
     <body>
-        <div hx-boost="true">
+        <div hx-boost="true" hx-target="#content">
             <a href="/page_a">Go to page A</a> 
             <a href="/page_b">Go to page B</a>
-        </div>   
+        </div>
+
+        <div id="content"></div>
+
     </body>
 </html>
