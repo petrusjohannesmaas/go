@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journal App</title>
+</head>
+<body>
+    <h1>Journal Entry</h1>
+    <form action="/" method="post">
+        <label for="bollinger_band">Bollinger Band:</label>
+        <input type="text" id="bollinger_band" name="bollinger_band"><br>
+
+        <label for="heiken_ashi">Heiken Ashi:</label>
+        <input type="text" id="heiken_ashi" name="heiken_ashi"><br>
+
+        <label for="candle_type">Candle Type:</label>
+        <select id="candle_type" name="candle_type">
+            <option value="Option 1">Option 1</option>
+            <option value="Option 2">Option 2</option>
+            <option value="Option 3">Option 3</option>
+        </select><br>
+
+        <label for="lot_size">Lot Size:</label>
+        <input type="number" id="lot_size" name="lot_size"><br>
+
+        <label for="risk">Risk (in pips):</label>
+        <input type="number" id="risk" name="risk"><br>
+
+        <input type="submit" value="Submit">
+    </form>
+
+    <h2>Journal Entries</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Bollinger Band</th>
+            <th>Heiken Ashi</th>
+            <th>Candle Type</th>
+            <th>Lot Size</th>
+            <th>Risk</th>
+        </tr>
+        {{range .}}
+        <tr>
+            <td>{{.ID}}</td>
+            <td>{{.BollingerBand}}</td>
+            <td>{{.HeikenAshi}}</td>
+            <td>{{.CandleType}}</td>
+            <td>{{.LotSize}}</td>
+            <td>{{.Risk}}</td>
+        </tr>
+        {{end}}
+    </table>
+</body>
+</html>
+
