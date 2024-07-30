@@ -9,7 +9,7 @@ func main() {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "components/index.html")
+		http.ServeFile(w, r, "components/router.html")
 	})
 
 	mux.HandleFunc("/page_a", func(w http.ResponseWriter, r *http.Request) {
