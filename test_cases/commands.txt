@@ -1,0 +1,9 @@
+If you want to test a file create a file called main_test.go
+
+Remember to create a Go module in the folder.
+
+In cmd type: go test 
+
+This will do a simple test.
+
+If you want to do multiple test cases, reference the test file in this directory and then type in cmd: go test -v
