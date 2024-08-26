@@ -2,9 +2,9 @@ package main
 
 import "testing"
 
-func TestCalculate(t *testing.T) {
-	if Calculate(2) != 4 {
-		t.Error("Expected 2 + 2 to equal 4")
+func TestConnection(t *testing.T) {
+	if connectPostgresDB(err) {
+		t.Error("Expected connection to work")
 	}
 }
 
