@@ -1,0 +1,43 @@
+<body class="container">
+    <div class="row mt-4 g-4">
+        <div class="col-6">
+            <h1 class="mb-4">Register</h1>
+            <form hx-post="/register/" hx-target="#user-message" hx-swap="innerHTML" hx-indicator="#spinner">
+                <div class="mb-2">
+                    <label for="register-username">Username</label>
+                    <input type="text" name="username" id="register-username" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label for="register-password">Password</label>
+                    <input type="password" name="password" id="register-password" class="form-control" />
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <span class="spinner-border spinner-border-sm htmx-indicator" id="spinner" role="status" aria-hidden="true"></span>
+                    Register
+                </button>
+            </form>
+        </div>
+
+        <div class="col-6">
+            <h1 class="mb-4">Login</h1>
+            <form hx-post="/login/" hx-target="#user-message" hx-swap="innerHTML" hx-indicator="#spinner">
+                <div class="mb-2">
+                    <label for="login-username">Username</label>
+                    <input type="text" name="username" id="login-username" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label for="login-password">Password</label>
+                    <input type="password" name="password" id="login-password" class="form-control" />
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <span class="spinner-border spinner-border-sm htmx-indicator" id="spinner" role="status" aria-hidden="true"></span>
+                    Login
+                </button>
+            </form>
+        </div>
+
+        <div class="col-12 mt-4">
+            <div id="user-message"></div>
+        </div>
+    </div>
+</body>
