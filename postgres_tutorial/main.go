@@ -77,12 +77,14 @@ func createProductTable(db *sql.DB) {
     price NUMERIC(6,2) NOT NULL,
     available BOOLEAN,
     created timestamp DEFAULT NOW()
-	)`
+)`
 
-	_, err := db.Exec(query)
-	if err != nil {
-		log.Fatal(err)
-	}
+	fmt.Println(query)
+
+	// 	_, err := db.Exec(query)
+	// 	if err != nil {
+	// 		log.Fatal(err)
+	// 	}
 }
 
 func insertProduct(db *sql.DB, product Product) int {
