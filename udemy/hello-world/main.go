@@ -1,8 +1,8 @@
 package main
 
 import (
+	_ doctor
 	"fmt"
-	"hello-world/doctor"
 )
 
 func main() {
