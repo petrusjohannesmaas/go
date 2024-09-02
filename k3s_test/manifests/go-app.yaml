@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: go-app
-          image: go-app:latest # Use the image you built
+          image: go-app:latest # Replace with your image registry if needed
           ports:
             - containerPort: 8080
           env:

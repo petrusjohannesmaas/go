@@ -1,35 +1,30 @@
-# Use the official Go image as the builder
-FROM golang:1.23 as builder
+# Use a Golang base image
+FROM golang:1.23 AS builder
 
-# Set the Current Working Directory inside the container
+# Set the working directory
 WORKDIR /app
 
-# Copy go.mod and go.sum files
+# Copy Go mod files and download dependencies
 COPY go.mod go.sum ./
-
-# Download all dependencies
 RUN go mod download
 
-# Copy the source code into the container
+# Copy the source code
 COPY . .
 
-# Build the Go app
-RUN go build -o main .
+# Build the Go application
+RUN go build -o go-app
 
-# Use a lightweight image for the final container
+# Use a smaller base image for the final stage
 FROM alpine:latest
 
-# Install necessary libraries to run the app
-RUN apk --no-cache add ca-certificates
+# Set the working directory
+WORKDIR /app
 
-# Set environment variables if needed, e.g., database URL
-ENV DB_URL=postgres://postgres:password@postgres:5432/pgtest?sslmode=disable
+# Copy the Go application from the builder stage
+COPY --from=builder /app/go-app .
 
-# Copy the binary from the builder stage
-COPY --from=builder /app/main .
-
-# Expose the port the Go app listens on
+# Expose port 8080
 EXPOSE 8080
 
-# Run the Go app
-CMD ["./main"]
+# Command to run the application
+CMD ["./go-app"]

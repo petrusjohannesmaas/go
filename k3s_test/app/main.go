@@ -4,13 +4,19 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"os"
 
 	_ "github.com/lib/pq"
 )
 
 // Function to connect to the PostgreSQL database
 func connectDB() (*sql.DB, error) {
-	connStr := "postgres://postgres:secret@localhost:5432/pgtest?sslmode=disable"
+	connStr := os.Getenv("DB_URL")
+
+	if connStr == "" {
+		return nil, fmt.Errorf("DB_URL environment variable is not set")
+	}
+
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
 		return nil, fmt.Errorf("failed to connect to the database: %v", err)
