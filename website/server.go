@@ -16,10 +16,6 @@ func main() {
 		http.ServeFile(w, r, "frontend/style.css")
 	})
 
-	mux.HandleFunc("/sydney", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeContent(w, r, "frontend/style.css")
-	})
-
 	fmt.Println("Server is running on port 80")
 	http.ListenAndServe("localhost:8080", mux) // take out the localhost if you want to deploy with docker
 }
