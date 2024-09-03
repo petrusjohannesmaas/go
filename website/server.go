@@ -12,8 +12,24 @@ func main() {
 		http.ServeFile(w, r, "frontend/portfolio.html")
 	})
 
-	mux.HandleFunc("/style", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "frontend/style.css")
+	mux.HandleFunc("/bio", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "frontend/bio.png")
+	})
+
+	mux.HandleFunc("/react", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "frontend/react.png")
+	})
+
+	mux.HandleFunc("/go", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "frontend/go.png")
+	})
+
+	mux.HandleFunc("/solidity", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "frontend/solidity.png")
+	})
+
+	mux.HandleFunc("/docker", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "frontend/docker.png")
 	})
 
 	fmt.Println("Server is running on port 80")
