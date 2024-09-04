@@ -1,14 +1,12 @@
 package main
 
 import (
-	_ doctor
 	"fmt"
+	"myapp/doctor"
 )
 
 func main() {
-	var whatToSay string
-
-	whatToSay = doctor.Intro()
+	whatToSay := doctor.Intro()
 
 	fmt.Println(whatToSay)
 }
