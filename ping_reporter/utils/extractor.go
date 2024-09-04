@@ -2,6 +2,7 @@ package utils
 
 import (
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"log"
 
@@ -9,10 +10,10 @@ import (
 )
 
 type Data struct {
-	Reading string
+	Reading string `json:"reading"`
 }
 
-func Extractor() {
+func Extractor() ([]byte, error) {
 	// Connect and open PostgreSQL
 	connStr := "postgres://postgres:test123@localhost:5432/pool?sslmode=disable"
 
@@ -42,5 +43,23 @@ func Extractor() {
 
 	defer rows.Close()
 
-	fmt.Println(data)
+	// Scan rows into Data structs
+	for rows.Next() {
+		var d Data
+		err := rows.Scan(&d.Reading)
+		if err != nil {
+			return nil, err // Return error if scan fails
+		}
+		data = append(data, d)
+
+		fmt.Println(data)
+	}
+
+	// Encode data as JSON
+	jsonData, err := json.Marshal(data)
+	if err != nil {
+		return nil, err // Return error if encoding fails
+	}
+
+	return jsonData, nil // Return encoded JSON data and nil error
 }
