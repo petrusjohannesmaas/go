@@ -38,8 +38,7 @@ func Extractor() {
             elem->>'identity' AS identity,
             elem->>'avg_rtt_ms' AS avg_rtt_ms
         FROM router_os_api.report,
-        jsonb_array_elements(data) AS elem
-        WHERE id = 1
+        jsonb_array_elements(neighbors) AS elem
     )
     SELECT
         identity,
