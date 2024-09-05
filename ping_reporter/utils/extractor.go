@@ -2,67 +2,74 @@ package utils
 
 import (
 	"database/sql"
-	"encoding/json"
 	"fmt"
 	"log"
 
 	_ "github.com/lib/pq"
 )
 
-type Data struct {
-	Reading string `json:"reading"`
+// Reading struct to map the result
+type Reading struct {
+	Identity string `json:"identity"`
+	MaxRtt   string `json:"max_rtt"`
 }
 
-func Extractor() ([]byte, error) {
+func Extractor() {
 	// Connect and open PostgreSQL
-	connStr := "postgres://postgres:test123@localhost:5432/pool?sslmode=disable"
-
+	connStr := "postgres://postgres:blouroomys123@localhost:5432/test?sslmode=disable"
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
 		log.Fatalf("Error opening database: %v", err)
 	}
-
 	defer db.Close()
 
 	// Check the database connection
 	if err = db.Ping(); err != nil {
-		if err == sql.ErrConnDone {
-			log.Fatalf("Database connection is already closed or unusable: %v", err)
-		} else {
-			log.Fatalf("Error pinging the database: %v", err)
-		}
+		log.Fatalf("Error pinging the database: %v", err)
 	}
 	fmt.Println("Successfully connected to the database!")
 
-	// Here we run a select statement from within the extractor function
-	data := []Data{}
-	// rows, err := db.Query("SELECT reading ->> 'age' FROM data")
-	rows, err := db.Query("SELECT reading FROM data")
-	if err != nil {
-		log.Fatal(err)
-	}
+	// Define the query with the WITH clause to find the highest avg_rtt
+	query := `
+    WITH extracted AS (
+        
+	SELECT
+            id,
+            elem->>'identity' AS identity,
+            elem->>'max_rtt' AS max_rtt,
+            (elem->>'avg_rtt')::numeric AS avg_rtt
+        FROM public.report,
+        jsonb_array_elements(data) AS elem
+        WHERE id = 1
+    )
+    SELECT
+        identity,
+        max_rtt
+    FROM extracted
+    WHERE avg_rtt = (
+        SELECT MAX(avg_rtt)
+        FROM extracted
+    );
+	`
 
+	// Execute the query
+	rows, err := db.Query(query)
+	if err != nil {
+		log.Fatalf("Error executing query: %v", err)
+	}
 	defer rows.Close()
 
-	// Scan rows into Data structs
-	for rows.Next() {
-		var d Data
-		err := rows.Scan(&d.Reading)
+	// Define a variable to store the result
+	var result Reading
+
+	// Check if there's at least one row and scan the result
+	if rows.Next() {
+		err = rows.Scan(&result.Identity, &result.MaxRtt)
 		if err != nil {
-			return nil, err // Return error if scan fails
+			log.Fatalf("Error scanning the row: %v", err)
 		}
-		data = append(data, d)
-
+		fmt.Printf("Identity with the highest avg_rtt: %s, Max Average RTT: %s\n", result.Identity, result.MaxRtt)
+	} else {
+		fmt.Println("No data found with the highest avg_rtt")
 	}
-
-	fmt.Printf("The data is %v", data)
-
-	// Encode data as JSON
-	jsonData, err := json.Marshal(data)
-	if err != nil {
-		return nil, err // Return error if encoding fails
-	}
-
-	return jsonData, nil // Return encoded JSON data and nil error
-
 }

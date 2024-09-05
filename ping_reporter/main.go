@@ -6,5 +6,4 @@ import (
 
 func main() {
 	utils.Extractor()
-	utils.Eval()
 }
