@@ -11,9 +11,10 @@ import (
 
 // Reading struct to map the result
 type Reading struct {
-	ID       int
-	Identity string
-	AvgRtt   float64
+	ID          int
+	PPPusername string
+	Identity    string
+	AvgRtt      float64
 }
 
 func Extractor() {
@@ -36,6 +37,7 @@ func Extractor() {
     WITH extracted AS (
         SELECT
             id,
+			ppp_username,
             elem->>'identity' AS identity,
             elem->>'avg_rtt_ms' AS avg_rtt_ms,
             ROW_NUMBER() OVER (PARTITION BY id ORDER BY CAST(elem->>'avg_rtt_ms' AS DOUBLE PRECISION) ASC) AS rn
@@ -43,7 +45,7 @@ func Extractor() {
         jsonb_array_elements(neighbors) AS elem
         WHERE elem->>'avg_rtt_ms' ~ '^[0-9]+(\.[0-9]+)?$' -- Filter to ensure avg_rtt_ms is numeric
     )
-    SELECT id, identity, avg_rtt_ms
+    SELECT id, ppp_username, identity, avg_rtt_ms
     FROM extracted
     WHERE rn = 1; -- Select the lowest avg_rtt_ms per record
 	`
@@ -60,7 +62,7 @@ func Extractor() {
 		var reading Reading
 		var avgRttStr string
 
-		err = rows.Scan(&reading.ID, &reading.Identity, &avgRttStr)
+		err = rows.Scan(&reading.ID, &reading.PPPusername, &reading.Identity, &avgRttStr)
 		if err != nil {
 			log.Printf("Error scanning the row: %v", err)
 			continue
@@ -74,7 +76,7 @@ func Extractor() {
 		}
 
 		// Print the result for each record
-		fmt.Printf("Record ID: %d, Neighbor with lowest avg_rtt_ms: %s, RTT: %.2f ms\n", reading.ID, reading.Identity, reading.AvgRtt)
+		fmt.Printf("Record ID: %d,PPP: %s, Neighbor with lowest avg_rtt_ms: %s, RTT: %.2f ms\n", reading.ID, reading.PPPusername, reading.Identity, reading.AvgRtt)
 	}
 
 	// Check for any errors encountered during iteration
