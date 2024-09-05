@@ -36,6 +36,7 @@ func Extractor() ([]byte, error) {
 
 	// Here we run a select statement from within the extractor function
 	data := []Data{}
+	// rows, err := db.Query("SELECT reading ->> 'age' FROM data")
 	rows, err := db.Query("SELECT reading FROM data")
 	if err != nil {
 		log.Fatal(err)
@@ -52,8 +53,9 @@ func Extractor() ([]byte, error) {
 		}
 		data = append(data, d)
 
-		fmt.Println(data)
 	}
+
+	fmt.Printf("The data is %v", data)
 
 	// Encode data as JSON
 	jsonData, err := json.Marshal(data)
@@ -62,4 +64,5 @@ func Extractor() ([]byte, error) {
 	}
 
 	return jsonData, nil // Return encoded JSON data and nil error
+
 }
