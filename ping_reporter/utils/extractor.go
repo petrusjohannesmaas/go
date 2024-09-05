@@ -11,7 +11,7 @@ import (
 // Reading struct to map the result
 type Reading struct {
 	Identity string `json:"identity"`
-	MaxRtt   string `json:"max_rtt"`
+	AvgRtt   string `json:"avg_rtt_ms"`
 }
 
 func Extractor() {
@@ -29,25 +29,24 @@ func Extractor() {
 	}
 	fmt.Println("Successfully connected to the database!")
 
-	// Define the query with the WITH clause to find the highest avg_rtt
+	// Define the query with the WITH clause to find the highest avg_rtt_ms
 	query := `
     WITH extracted AS (
         
 	SELECT
             id,
             elem->>'identity' AS identity,
-            elem->>'max_rtt' AS max_rtt,
-            (elem->>'avg_rtt')::numeric AS avg_rtt
-        FROM public.report,
+            elem->>'avg_rtt_ms' AS avg_rtt_ms
+        FROM router_os_api.report,
         jsonb_array_elements(data) AS elem
         WHERE id = 1
     )
     SELECT
         identity,
-        max_rtt
+        avg_rtt_ms
     FROM extracted
-    WHERE avg_rtt = (
-        SELECT MAX(avg_rtt)
+    WHERE avg_rtt_ms = (
+        SELECT MAX(avg_rtt_ms)
         FROM extracted
     );
 	`
@@ -64,12 +63,12 @@ func Extractor() {
 
 	// Check if there's at least one row and scan the result
 	if rows.Next() {
-		err = rows.Scan(&result.Identity, &result.MaxRtt)
+		err = rows.Scan(&result.Identity, &result.AvgRtt)
 		if err != nil {
 			log.Fatalf("Error scanning the row: %v", err)
 		}
-		fmt.Printf("Identity with the highest avg_rtt: %s, Max Average RTT: %s\n", result.Identity, result.MaxRtt)
+		fmt.Printf("Neighbor with lowest avg_rtt_ms: %s, RTT: %s\n", result.Identity, result.AvgRtt)
 	} else {
-		fmt.Println("No data found with the highest avg_rtt")
+		fmt.Println("No data found")
 	}
 }
