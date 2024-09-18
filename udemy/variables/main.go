@@ -1,17 +1,40 @@
 package main
 
-import "fmt"
+import (
+	"bufio"
+	"fmt"
+	"os"
+)
+
+const prompt = "and press ENTER when ready."
 
 func main() {
-	// declare and then assign (two steps)
-	var firstNumber int
-	firstNumber = 2
-
-	// declare type and name and assign value
+	var firstNumber = 2
 	var secondNumber = 5
+	var subtraction = 7
+	//var answer int
 
-	//declare name and value, let Go autoassign type
-	subtraction := 7
+	reader := bufio.NewReader(os.Stdin)
 
-	fmt.Println(firstNumber, secondNumber, subtraction)
+	// display a welcome/instruction
+	fmt.Println("Guess the Number Game")
+	fmt.Println("---------------------")
+	fmt.Println("")
+
+	fmt.Println("Think of a number between 1 and 10", prompt)
+
+	reader.ReadString('\n')
+
+	fmt.Println("Multiply your number by", firstNumber, prompt)
+	reader.ReadString('\n')
+
+	fmt.Println("Now multiply the result by", secondNumber, prompt)
+	reader.ReadString('\n')
+
+	fmt.Println("Divide the result by the number you originally thought of", prompt)
+	reader.ReadString('\n')
+
+	fmt.Println("Now subtract", subtraction, prompt)
+	reader.ReadString('\n')
+
 }
